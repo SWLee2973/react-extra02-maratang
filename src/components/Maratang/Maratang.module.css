@@ -1,0 +1,29 @@
+
+.selectToping {
+  border: 1px solid red;
+  inline-size: 600px;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 10px 20px;
+  gap: 10px;
+
+  label {
+    border: 1px solid gray;
+    padding: 4px;
+    border-radius: 4px;
+    background-color: #ccc;
+    user-select: none;
+    color: black;
+    font-size: 0.9rem;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input[type="checkbox"]:checked+label {
+    border: 1px solid dodgerblue;
+    background-color: dodgerblue;
+    color: white;
+  }
+}
