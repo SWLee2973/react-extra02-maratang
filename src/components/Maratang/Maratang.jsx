@@ -1,21 +1,47 @@
-import { useState } from 'react'
-import maratang from '/src/assets/maratang.webp'
-import classes from './Maratang.module.css'
-import toppingData from '../../data/toppingData.json'
-import { Topping } from '../'
+import { useState } from 'react';
+import maratang from '/src/assets/maratang.webp';
+import classes from './Maratang.module.css';
+import toppingData from '../../data/toppingData.json';
+import { Topping } from '../';
+
+const INITIAL_TOPPING = {
+  isAllToppings: false,
+  toppingList: [],
+};
 
 function Maratang() {
-  const [toppingList, updateToppingList] = useState([]);
+  const [topping, updateTopping] = useState(INITIAL_TOPPING);
 
   const handleCheckTopping = (e) => {
-    const selectedTopping = e.target.value;
+    const { toppingList } = topping;
+    const { value, checked } = e.target;
 
-    const nextToppingList = toppingList.includes(selectedTopping) ? 
-      toppingList.filter(topping => topping != selectedTopping) : 
-      [...toppingList, selectedTopping]
+    const changeCheckTopping = checked
+      ? [...toppingList, value]
+      : toppingList.filter((topping) => topping != value);
+    const isCheckedAllToppings =
+      changeCheckTopping.length === toppingData.length;
 
-    updateToppingList(nextToppingList);
-  }
+    const nextToppingList = {
+      isAllToppings: isCheckedAllToppings,
+      toppingList: changeCheckTopping,
+    };
+
+    updateTopping(nextToppingList);
+  };
+
+  const onChangeAllToppings = (e) => {
+    const { checked } = e.target;
+
+    updateTopping({
+      isAllToppings: checked,
+      toppingList: checked
+        ? Array(toppingData.length)
+            .fill(1)
+            .map((_, index) => toppingData[index].value)
+        : [],
+    });
+  };
 
   return (
     <>
@@ -26,24 +52,34 @@ function Maratang() {
       </div>
       <h1>마라탕 토핑 선택</h1>
       <form className={classes.selectTopping}>
-        {toppingData.map(toppingObj => {
+        <Topping
+          id="allcheck"
+          onChange={onChangeAllToppings}
+          checked={topping.isAllToppings}
+        >
+          전체선택
+        </Topping>
+        {toppingData.map((toppingObj) => {
           return (
             <Topping
               key={toppingObj.id}
               id={toppingObj.id}
+              checked={topping.toppingList.includes(toppingObj.value)}
               value={toppingObj.value}
-              onCheckTopping={handleCheckTopping}
+              onChange={handleCheckTopping}
             >
               {toppingObj.value}
             </Topping>
-          )
+          );
         })}
       </form>
       <output>
-        {toppingList.length === 0 ? '' : `선택된 재료: ${toppingList.toString()}`}
+        {topping.toppingList.length === 0
+          ? ''
+          : `선택된 재료: ${topping.toppingList.toString()}`}
       </output>
     </>
-  )
+  );
 }
 
-export default Maratang
+export default Maratang;

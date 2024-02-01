@@ -1,22 +1,21 @@
 
 
 
-function Toping({
-  id, value, children, onCheckToping
+function Topping({
+  id, children, ...restProps
 }) {
   return (
     <div>
       <input 
-        type="checkbox" 
         id={id} 
-        name="Toping" 
-        onChange={onCheckToping}
-        value={value}
+        type="checkbox" 
+        name="Topping"
+        {...restProps}
       />
       <label htmlFor={id}>{children}</label>
     </div>
   )
 }
 
-export default Toping;
+export default Topping;
 
