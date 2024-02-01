@@ -1,7 +1,7 @@
 
-.selectToping {
+.selectTopping {
   border: 1px solid red;
-  inline-size: 600px;
+  inline-size: 620px;
   display: flex;
   flex-flow: row wrap;
   padding: 10px 20px;
